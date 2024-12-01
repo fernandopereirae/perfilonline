@@ -1,31 +1,21 @@
 // script.js
-document.addEventListener("DOMContentLoaded", async () => {
- // Referência ao HTML
- const referrerElement = document.getElementById("referrer");
- const locationElement = document.getElementById("location");
- const deviceInfoElement = document.getElementById("device-info");
+document.addEventListener("DOMContentLoaded", () => {
+ const referrerLog = document.getElementById("referrer-log");
 
- // Capturar o site de origem (referrer)
- const referrer = document.referrer || "Acesso direto (sem origem)";
- referrerElement.textContent = `Origem: ${referrer}`;
+ // Capturar o site de origem
+ const referrer = document.referrer;
 
- // Capturar localização usando a API de geolocalização
- try {
-  const response = await fetch("https://ip-api.com/json");
-  const data = await response.json();
-
-  if (data.status === "success") {
-   locationElement.textContent = `Localização aproximada: ${data.city}, ${data.regionName}, ${data.country}`;
+ if (referrer) {
+  if (referrer.includes("instagram.com")) {
+   referrerLog.textContent = "Você chegou aqui através de um link no Instagram.";
+  } else if (referrer.includes("facebook.com")) {
+   referrerLog.textContent = "Você chegou aqui através de um link no Facebook.";
+  } else if (referrer.includes("youtube.com")) {
+   referrerLog.textContent = "Você chegou aqui através de um link no YouTube.";
   } else {
-   locationElement.textContent = "Não foi possível determinar a localização.";
+   referrerLog.textContent = `Origem: ${referrer}`;
   }
- } catch (error) {
-  locationElement.textContent = "Erro ao buscar a localização.";
+ } else {
+  referrerLog.textContent = "Você acessou o site diretamente ou a origem não foi detectada.";
  }
-
- // Capturar informações do dispositivo
- const userAgent = navigator.userAgent;
- const platform = navigator.platform;
-
- deviceInfoElement.textContent = `Dispositivo: ${platform} | Navegador: ${userAgent}`;
 });
